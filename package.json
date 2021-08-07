@@ -4,8 +4,9 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start":  "concurrently \"typescript -w\" \"nodemon index.ts\"",
-    "build": "tsc"
+    "start": "nodemon index.ts",
+    "build": "tsc",
+    "dev": "concurrently \"typescript -w\" \"nodemon index.ts\""
   },
   "dependencies": {
     "@types/jest": "^26.0.24",
