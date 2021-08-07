@@ -1,7 +1,0 @@
-{
-    "env": {
-        "MONGO_USER": "ronawchan",
-        "MONGO_PASSWORD": "f1n4Lheightdr!",
-        "MONGO_DB": "StudioGhibliTitiles"
-    }
-}
