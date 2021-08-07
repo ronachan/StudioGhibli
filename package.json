@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon index.ts",
     "build": "tsc",
-    "dev": "concurrently \"typescript -w\" \"nodemon index.ts\""
+    "dev": "concurrently \"typescript -w\" \"nodemon index.ts\"",
+    "heroku-postbuild":"yarn install && yarn run build"
   },
   "dependencies": {
     "@types/jest": "^26.0.24",
