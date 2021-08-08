@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-const db = require('mongodb').Db;
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient } = require("mongodb").MongoClient;
 app.use(cors());
 require("dotenv").config();
 
