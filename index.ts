@@ -7,8 +7,8 @@ const MongoClient = require("mongodb").MongoClient;
 app.use(cors());
 require("dotenv").config();
 
-// let url: string = `mongodb+srv://ronawchan:${process.env.MONGODB_PASSWORD}@studioghibli.ns2sq.mongodb.net/test?authSource=admin&replicaSet=atlas-oabmfr-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true`;
-const url = process.env.MONGODB_URI;
+let url: string = `mongodb+srv://ronawchan:${process.env.MONGODB_PASSWORD}@studioghibli.ns2sq.mongodb.net/test?authSource=admin&replicaSet=atlas-oabmfr-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true`;
+// const url = process.env.MONGODB_URI;
 let dbName: string = "StudioGhibliTitiles";
 let collName: string = "StudioGhibliFilms";
 let isAscending: boolean = true;
