@@ -35,7 +35,7 @@ async function getStudioGhibliFilms(isAscending: boolean) {
     await myMongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (connectErr: string, client: typeof myMongoClient) {
+      function (connectErr: string, client: typeof myMongoClient) {
         if(connectErr) throw new Error(connectErr);
           const coll = client.db(dbName).collection(collName);
           coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
