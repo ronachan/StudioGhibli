@@ -27,7 +27,7 @@ const GenerateHandleFilmsFunc = (client: typeof myMongoClient) => {
   return function (cmdErr: string, result: []) {
     if(cmdErr) throw new Error(cmdErr);
       app.get("/", GenerateHandleRootGet(result));
-      client.close();
+      // client.close();
   };
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
@@ -38,7 +38,8 @@ async function getStudioGhibliFilms(isAscending: boolean) {
       async function (connectErr: string, client: typeof myMongoClient) {
         if(connectErr) throw new Error(connectErr);
           const coll = client.db(dbName).collection(collName);
-          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));  
+          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
+          client.close();
       }
     );
   }catch(err){
@@ -104,7 +105,11 @@ async function getStudioGhibliFilms(isAscending: boolean) {
 //   }
 // }
 
-getStudioGhibliFilms(isAscending);
+try{
+  getStudioGhibliFilms(isAscending);
+}catch(err){
+  console.log(err);
+}
 // getStudioGhibliRating(isDescending);
 // getStudioGhibliRelease(isAscending);
 
