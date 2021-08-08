@@ -15,34 +15,33 @@ let isAscending: boolean = true;
 let isDescending: boolean = true;
 
 const GenerateHandleRootGet = (result: []) => {
-  return async (
-    req: Request,
-    res: Response
-  ) => {
+  return async (req: Request, res: Response) => {
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(result));
   };
 };
 const GenerateHandleFilmsFunc = (client: typeof myMongoClient) => {
   return function (cmdErr: string, result: []) {
-    if(cmdErr) throw new Error(cmdErr);
-      app.get("/", GenerateHandleRootGet(result));
-      // client.close();
+    if (cmdErr) throw new Error(cmdErr);
+    app.get("/", GenerateHandleRootGet(result));
+    // client.close();
   };
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
-  try{
+  try {
     await myMongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
       function (connectErr: string, client: typeof myMongoClient) {
-        if(connectErr) throw new Error(connectErr);
-          const coll = client.db(dbName).collection(collName);
-          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
-          client.close();
+        if (connectErr) throw new Error(connectErr);
+        const coll = client.db(dbName).collection(collName);
+        coll
+          .find()
+          .sort({ title: isAscending ? 1 : -1 })
+          .toArray(GenerateHandleFilmsFunc(client));
       }
     );
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
 }
@@ -105,9 +104,9 @@ async function getStudioGhibliFilms(isAscending: boolean) {
 //   }
 // }
 
-try{
+try {
   getStudioGhibliFilms(isAscending);
-}catch(err){
+} catch (err) {
   console.log(err);
 }
 // getStudioGhibliRating(isDescending);
