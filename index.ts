@@ -25,13 +25,10 @@ const GenerateHandleRootGet = (result: []) => {
   };
 };
 const GenerateHandleFilmsFunc = (client: typeof MongoClient) => {
-  return function (result: []) {
-    try{
+  return function (cmdErr: string, result: []) {
+    if(cmdErr) throw new Error(cmdErr);
       app.get("/", GenerateHandleRootGet(result));
       client.close();
-    }catch(cmdErr){
-      console.log(cmdErr);
-    }
   };
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
@@ -39,81 +36,78 @@ async function getStudioGhibliFilms(isAscending: boolean) {
     await MongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (client: typeof MongoClient) {
-        try{
+      async function (connectErr: string, client: typeof MongoClient) {
+        if(connectErr) throw new Error(connectErr);
           const coll = client.db(dbName).collection(collName);
-          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
-        }catch(connectErr){
-          console.log(connectErr);
-        }  
+          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));  
       }
     );
-  }catch(error){
-    console.log(error);
+  }catch(err){
+    console.log(err);
   }
 }
 
-const GenerateHandleRatingFunc = (client: typeof MongoClient) => {
-  return function (result: []) {
-    try{
-      app.get("/api/getRating", GenerateHandleRootGet(result));
-      client.close();
-    }catch(cmdErr){
-      console.log(cmdErr);
-    }
-  };
-};
-async function getStudioGhibliRating(isDescending: boolean) {
-  try{
-    await MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (client: typeof MongoClient) {
-        try{
-          const coll = client.db(dbName).collection(collName);
-          coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
-        }catch(connectErr){
-          console.log(connectErr);
-        }
-      }
-    );
-  }catch(error){
-    console.log(error);
-  }
-}
+// const GenerateHandleRatingFunc = (client: typeof MongoClient) => {
+//   return function (result: []) {
+//     try{
+//       app.get("/api/getRating", GenerateHandleRootGet(result));
+//       client.close();
+//     }catch(cmdErr){
+//       console.log(cmdErr);
+//     }
+//   };
+// };
+// async function getStudioGhibliRating(isDescending: boolean) {
+//   try{
+//     await MongoClient.connect(
+//       url,
+//       { useNewUrlParser: true, useUnifiedTopology: true },
+//       async function (client: typeof MongoClient) {
+//         try{
+//           const coll = client.db(dbName).collection(collName);
+//           coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
+//         }catch(connectErr){
+//           console.log(connectErr);
+//         }
+//       }
+//     );
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
 
-const GenerateHandleReleaseFunc = (client: typeof MongoClient) => {
-  return function (result: []) {
-    try{
-      app.get("/api/getRelease", GenerateHandleRootGet(result));
-      client.close();
-    }catch(cmdErr){
-      console.log(cmdErr);
-    }
-  };
-};
-async function getStudioGhibliRelease(isAscending: boolean) {
-  try{
-    await MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (client: typeof MongoClient) {
-        try{
-          const coll = client.db(dbName).collection(collName);
-          coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
-        }catch(connectErr){
-          console.log(connectErr);
-        }
-      }
-    );
-  }catch(error){
-    console.log(error);
-  }
-}
+// const GenerateHandleReleaseFunc = (client: typeof MongoClient) => {
+//   return function (result: []) {
+//     try{
+//       app.get("/api/getRelease", GenerateHandleRootGet(result));
+//       client.close();
+//     }catch(cmdErr){
+//       console.log(cmdErr);
+//     }
+//   };
+// };
+// async function getStudioGhibliRelease(isAscending: boolean) {
+//   try{
+//     await MongoClient.connect(
+//       url,
+//       { useNewUrlParser: true, useUnifiedTopology: true },
+//       async function (client: typeof MongoClient) {
+//         try{
+//           const coll = client.db(dbName).collection(collName);
+//           coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
+//         }catch(connectErr){
+//           console.log(connectErr);
+//         }
+//       }
+//     );
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
 
 getStudioGhibliFilms(isAscending);
-getStudioGhibliRating(isDescending);
-getStudioGhibliRelease(isAscending);
+// getStudioGhibliRating(isDescending);
+// getStudioGhibliRelease(isAscending);
 
 app.listen(process.env.PORT || port, () => {
   console.log(`server started at http://localhost:${port}`);
