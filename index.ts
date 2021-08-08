@@ -96,6 +96,6 @@ getStudioGhibliFilms(isAscending);
 getStudioGhibliRating(isDescending);
 getStudioGhibliRelease(isAscending);
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
