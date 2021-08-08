@@ -36,13 +36,15 @@ async function getStudioGhibliFilms(isAscending: boolean) {
   await MongoClient.connect(
     url,
     { useNewUrlParser: true, useUnifiedTopology: true },
-    async function (connectErr: string, client: typeof MongoClient) {
-      if (connectErr) throw new Error(connectErr);
-      const coll = client
-        .db("StudioGhibliTitiles")
-        .collection("StudioGhibliFilms");
+    async function (client: typeof MongoClient) {
+      // if (connectErr) throw new Error(connectErr);
+      try{
+        const coll = client.db(dbName).collection(collName);
 
-      coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
+        coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
+      }catch(error){
+        console.log(error);
+      }
     }
   );
 }
@@ -58,13 +60,14 @@ async function getStudioGhibliRating(isDescending: boolean) {
   await MongoClient.connect(
     url,
     { useNewUrlParser: true, useUnifiedTopology: true },
-    async function (connectErr: string, client: typeof MongoClient) {
-      if (connectErr) throw new Error(connectErr);
-      const coll = client
-        .db("StudioGhibliTitiles")
-        .collection("StudioGhibliFilms");
+    async function (client: typeof MongoClient) {
+      try{
+        const coll = client.db(dbName).collection(collName);
 
-      coll.find().sort({ rt_score: isDescending?-1:1 }).toArray(GenerateHandleRatingFunc(client));
+        coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
+      }catch(error){
+        console.log(error);
+      }
     }
   );
 }
@@ -81,12 +84,13 @@ async function getStudioGhibliRelease(isAscending: boolean) {
     url,
     { useNewUrlParser: true, useUnifiedTopology: true },
     async function (connectErr: string, client: typeof MongoClient) {
-      if (connectErr) throw new Error(connectErr);
-      const coll = client
-        .db("StudioGhibliTitiles")
-        .collection("StudioGhibliFilms");
+      try{
+        const coll = client.db(dbName).collection(collName);
 
-      coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
+        coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
+      }catch(error){
+        console.log(error);
+      }
     }
   );
 }
