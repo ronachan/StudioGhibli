@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const nodefetch = require("node-fetch");
 const app = express();
 const port = 3000;
 const MongoClient = require("mongodb").MongoClient;
@@ -33,20 +31,19 @@ const GenerateHandleFilmsFunc = (client: typeof MongoClient) => {
   };
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
-  await MongoClient.connect(
-    url,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    async function (client: typeof MongoClient) {
-      // if (connectErr) throw new Error(connectErr);
-      try{
+  try{
+    await MongoClient.connect(
+      url,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      async function (connectErr: string, client: typeof MongoClient) {
+        if (connectErr) throw new Error(connectErr);
         const coll = client.db(dbName).collection(collName);
-
         coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
-      }catch(error){
-        console.log(error);
-      }
-    }
-  );
+        }
+    );
+  }catch(error){
+    console.log(error);
+  }
 }
 
 const GenerateHandleRatingFunc = (client: typeof MongoClient) => {
@@ -57,19 +54,19 @@ const GenerateHandleRatingFunc = (client: typeof MongoClient) => {
   };
 };
 async function getStudioGhibliRating(isDescending: boolean) {
-  await MongoClient.connect(
-    url,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    async function (client: typeof MongoClient) {
-      try{
+  try{
+    await MongoClient.connect(
+      url,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      async function (connectErr: string, client: typeof MongoClient) {
+        if (connectErr) throw new Error(connectErr);
         const coll = client.db(dbName).collection(collName);
-
         coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
-      }catch(error){
-        console.log(error);
       }
-    }
-  );
+    );
+  }catch(error){
+    console.log(error);
+  }
 }
 
 const GenerateHandleReleaseFunc = (client: typeof MongoClient) => {
@@ -80,19 +77,19 @@ const GenerateHandleReleaseFunc = (client: typeof MongoClient) => {
   };
 };
 async function getStudioGhibliRelease(isAscending: boolean) {
-  await MongoClient.connect(
-    url,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    async function (connectErr: string, client: typeof MongoClient) {
-      try{
+  try{
+    await MongoClient.connect(
+      url,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      async function (connectErr: string, client: typeof MongoClient) {
+        if (connectErr) throw new Error(connectErr);
         const coll = client.db(dbName).collection(collName);
-
         coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
-      }catch(error){
-        console.log(error);
       }
-    }
-  );
+    );
+  }catch(error){
+    console.log(error);
+  }
 }
 
 getStudioGhibliFilms(isAscending);
