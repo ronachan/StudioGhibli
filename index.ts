@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+const db = require('mongodb').Db;
 const express = require("express");
 const cors = require("cors");
 const app = express();
