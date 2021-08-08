@@ -14,18 +14,18 @@ let collName: string = "StudioGhibliFilms";
 let isAscending: boolean = true;
 let isDescending: boolean = true;
 
-const GenerateHandleRootGet = (client: typeof myMongoClient, result: []) => {
+const GenerateHandleRootGet = (result: []) => {
   return async (req: Request, res: Response) => {
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(result));
-    client.close();
+    // client.close();
   };
 };
 const GenerateHandleFilmsFunc = (client: typeof myMongoClient) => {
   return function (cmdErr: string, result: []) {
     if (cmdErr) throw new Error(cmdErr);
-    app.get("/", GenerateHandleRootGet(client,result));
-    // client.close();
+    app.get("/", GenerateHandleRootGet(result));
+    client.close();
   };
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
