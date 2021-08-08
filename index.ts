@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { connect } from "http2";
 
 const express = require("express");
 const cors = require("cors");
@@ -35,11 +36,14 @@ async function getStudioGhibliFilms(isAscending: boolean) {
     await MongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (connectErr: string, client: typeof MongoClient) {
-        if (connectErr) throw new Error(connectErr);
-        const coll = client.db(dbName).collection(collName);
-        coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
-        }
+      async function (client: typeof MongoClient) {
+        try{
+          const coll = client.db(dbName).collection(collName);
+          coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));
+        }catch(connectErr){
+          console.log(connectErr);
+        }  
+      }
     );
   }catch(error){
     console.log(error);
@@ -58,10 +62,13 @@ async function getStudioGhibliRating(isDescending: boolean) {
     await MongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (connectErr: string, client: typeof MongoClient) {
-        if (connectErr) throw new Error(connectErr);
-        const coll = client.db(dbName).collection(collName);
-        coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
+      async function (client: typeof MongoClient) {
+        try{
+          const coll = client.db(dbName).collection(collName);
+          coll.find().sort({ rt_score: isDescending?1:-1 }).toArray(GenerateHandleRatingFunc(client));
+        }catch(connectErr){
+          console.log(connectErr);
+        }
       }
     );
   }catch(error){
@@ -81,10 +88,13 @@ async function getStudioGhibliRelease(isAscending: boolean) {
     await MongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (connectErr: string, client: typeof MongoClient) {
-        if (connectErr) throw new Error(connectErr);
-        const coll = client.db(dbName).collection(collName);
-        coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
+      async function (client: typeof MongoClient) {
+        try{
+          const coll = client.db(dbName).collection(collName);
+          coll.find().sort({ release_date: isAscending?1:-1 }).toArray(GenerateHandleReleaseFunc(client));
+        }catch(connectErr){
+          console.log(connectErr);
+        }
       }
     );
   }catch(error){
