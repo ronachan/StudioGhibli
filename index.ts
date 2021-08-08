@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { connect } from "http2";
 
 const express = require("express");
 const cors = require("cors");
@@ -25,7 +24,7 @@ const GenerateHandleRootGet = (result: []) => {
   };
 };
 const GenerateHandleFilmsFunc = (client: typeof MongoClient) => {
-  return function (cmdErr: string, result: []) {
+  return function (result: []) {
     try{
       app.get("/", GenerateHandleRootGet(result));
       client.close();
@@ -54,7 +53,7 @@ async function getStudioGhibliFilms(isAscending: boolean) {
 }
 
 const GenerateHandleRatingFunc = (client: typeof MongoClient) => {
-  return function (cmdErr: string, result: []) {
+  return function (result: []) {
     try{
       app.get("/api/getRating", GenerateHandleRootGet(result));
       client.close();
@@ -83,7 +82,7 @@ async function getStudioGhibliRating(isDescending: boolean) {
 }
 
 const GenerateHandleReleaseFunc = (client: typeof MongoClient) => {
-  return function (cmdErr: string, result: []) {
+  return function (result: []) {
     try{
       app.get("/api/getRelease", GenerateHandleRootGet(result));
       client.close();
