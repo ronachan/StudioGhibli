@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-const MongoClient = require("mongodb").MongoClient;
+const myMongoClient = require("mongodb").MongoClient;
 app.use(cors());
 require("dotenv").config();
 
@@ -23,7 +23,7 @@ const GenerateHandleRootGet = (result: []) => {
     res.end(JSON.stringify(result));
   };
 };
-const GenerateHandleFilmsFunc = (client: typeof MongoClient) => {
+const GenerateHandleFilmsFunc = (client: typeof myMongoClient) => {
   return function (cmdErr: string, result: []) {
     if(cmdErr) throw new Error(cmdErr);
       app.get("/", GenerateHandleRootGet(result));
@@ -32,10 +32,10 @@ const GenerateHandleFilmsFunc = (client: typeof MongoClient) => {
 };
 async function getStudioGhibliFilms(isAscending: boolean) {
   try{
-    await MongoClient.connect(
+    await myMongoClient.connect(
       url,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      async function (connectErr: string, client: typeof MongoClient) {
+      async function (connectErr: string, client: typeof myMongoClient) {
         if(connectErr) throw new Error(connectErr);
           const coll = client.db(dbName).collection(collName);
           coll.find().sort({ title: isAscending?1:-1 }).toArray(GenerateHandleFilmsFunc(client));  
