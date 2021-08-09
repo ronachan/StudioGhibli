@@ -8,6 +8,7 @@ app.use(cors());
 require("dotenv").config();
 
 // let url: string = `mongodb+srv://ronawchan:${process.env.MONGODB_PASSWORD}@studioghibli.ns2sq.mongodb.net/test?authSource=admin&replicaSet=atlas-oabmfr-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true`;
+// url is inside of config vars for MongoDB Atlas
 const url = process.env.MONGODB_URI;
 let dbName: string = "StudioGhibliTitiles";
 let collName: string = "StudioGhibliFilms";
@@ -18,7 +19,6 @@ const GenerateHandleRootGet = (result: []) => {
   return async (req: Request, res: Response) => {
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(result));
-    // client.close();
   };
 };
 const GenerateHandleFilmsFunc = (client: typeof myMongoClient) => {
